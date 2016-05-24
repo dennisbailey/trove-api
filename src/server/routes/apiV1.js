@@ -20,6 +20,21 @@ router.get('/markets', function(req, res, next) {
 
 });
 
+// Route to return all information for ONE Farmers Market
+router.get('/markets/:marketID', function(req, res, next) {
+
+  api.getInfoFor(8370)
+
+  .then( function(result) { return res.status(200)
+                                      .json({ status: 'All the great info for this Farmers Market',
+                                              data: result }); })
+
+  .catch( function(error) { return res.status(401)
+                                       .json({ status: 'There was an error',
+                                               errorMsg: error }); console.log(error);});
+
+});
+
 
 /***************************/
 /* --- MESSAGES ROUTES --- */
