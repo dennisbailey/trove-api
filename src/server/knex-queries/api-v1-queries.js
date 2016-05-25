@@ -10,10 +10,13 @@ module.exports = {
   // *** /markets Queries *** //
   
   getInfoFor: function(marketID) { return knex('markets')
-                                   .innerJoin('markets_categories', 'markets_categories.fmid', 'markets.fmid')
-                                   .innerJoin('categories', 'categories.id', 'markets_categories.category_id')
-                                   .where('markets.id', marketID)
+                                         .where('markets.id', marketID)
     
+  },
+  
+  getCategoriesFor: function(fmid) { return knex('markets_categories')
+                                            .innerJoin('categories', 'categories.id', 'markets_categories.category_id')
+                                            .where('markets_categories.fmid', fmid)
   },
   
   // *** /messages Queries *** //
