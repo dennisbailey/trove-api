@@ -15,8 +15,8 @@ exports.up = function(knex, Promise) {
     table.string('zip'),
     table.string('season_dt'),
     table.string('season_time'),
-    table.string('lat').defaultTo('0'),
-    table.string('lng').defaultTo('0'),
+    table.float('lat').defaultTo(0),
+    table.float('lng').defaultTo(0),
     table.string('dt_update')
   })
   
