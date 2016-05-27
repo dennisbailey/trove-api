@@ -25,7 +25,6 @@ router.get('/markets', function(req, res, next) {
 
 // Route to find the markets that are near a given latitude and longitude
 router.get('/markets/nearby', function(req, res, next) {
-  console.log(req.query);
   
   var radiusEarth = 3959;
   var radiusSearch = parseFloat(req.query.searchRadius);
@@ -47,8 +46,7 @@ router.get('/markets/nearby', function(req, res, next) {
 
   .catch( function(error) { return res.status(401)
                                       .json({ status: 'There was an error',
-                                              errorMsg: error }); console.log(error);
-  });
+                                              errorMsg: error }); });
 
 });
 
