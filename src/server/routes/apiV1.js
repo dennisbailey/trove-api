@@ -1,6 +1,7 @@
 var express = require('express');
 var api = require('../knex-queries/api-v1-queries');
 var router = express.Router();
+var geoHelpers = require('../helpers/geo-helpers');
 
 /*************************/
 /* --- MARKET ROUTES --- */
@@ -31,30 +32,17 @@ router.get('/markets/nearby', function(req, res, next) {
   var lat = parseFloat(req.query.lat);
   var lng = parseFloat(req.query.lng)
   
-  // Converts from degrees to radians.
-  var radians = function(degrees) {
-    return degrees * Math.PI / 180;
-  };
-   
-  // Converts from radians to degrees.
-  var degrees = function(radians) {
-    return radians * 180 / Math.PI;
-  };
   
-  var latMax = lat + degrees(radiusSearch/radiusEarth);
-  var latMin = lat - degrees(radiusSearch/radiusEarth);
-  var lngMax = lng + degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(radians(lat)));
-  var lngMin = lng - degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(radians(lat)));
-  
-//   Math.acos(Math.sin(degrees(lat))*Math.sin(radians(LAT)) + Math.cos(degrees(lat))*Math.cos(radians(LAT))*Math.cos(radians(LNG)-degrees(lng))) * 3959 < 10
-                              
-  console.log(latMax, latMin, lngMax, lngMin);
-  
+  var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
+  var latMin = lat - geoHelpers.degrees(radiusSearch/radiusEarth);
+  var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
+  var lngMin = lng - geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
+                                
   api.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
   
   .then( function(result) { return res.status(200)
                                       .json({ status: 'Check out these nearby Farmers Markets',
-                                              nearbyMarkets: result }); 
+                                              nearbyMarkets: geoHelpers.sortByDistance(result, lat, lng, radiusSearch) }); 
   })
 
   .catch( function(error) { return res.status(401)
