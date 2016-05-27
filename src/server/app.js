@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
+var cors = require('cors');
 
 
 // *** routes *** //
@@ -28,6 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 
 // *** config middleware *** //
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
