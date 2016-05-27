@@ -1,4 +1,4 @@
-fmid,market_name,website,facebook,twitter,youtube,street,city,county,state,zip,season_dt,season_time,lat,lng,dt_update
+fmid,market_name,website,facebook,twitter,youtube,street,city,county,state,zip,season_dt,season_time,lng,lat,dt_update
 1000001,Shelby Food and Craft Market,,,,,City Hall park,Shelby,Toole,Montana,59474,,,-111.856,48.5041,2009
 1000003,Edmore Farmers Market,http://www.Edmore.org,https://www.facebook.com/EdmoreFarmersMarket,https://Twitter.com/edmoremarket,,Corner of Lewis Street and Pine Street,Edmore,Montcalm,Michigan,48829,05/31/2014 to 10/31/2014,Tue: 3:00 PM-6:30 PM Fri: 8:00 AM-1:00 PM,-85.037581,43.4060489,3/14/14 11:06
 1000004,Duvall Farmers Market,http://www.duvallfarmersmarket.org,,,,Brown Avenue,Duvall,King,Washington,98019,May to September,Thu:3:00 pm - 7:00 pm,-121.986,47.7382,4/18/11 13:05
