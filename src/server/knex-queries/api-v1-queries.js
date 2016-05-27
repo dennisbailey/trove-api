@@ -19,6 +19,17 @@ module.exports = {
                                             .where('markets_categories.fmid', fmid)
   },
   
+  findNearbyMarkets: function(latMin, 
+                              latMax, 
+                              lngMin, 
+                              lngMax) { return knex('markets')
+                                              .where(   'lat', '>', latMin)
+                                              .andWhere('lat', '<', latMax)
+                                              .andWhere('lng', '>', lngMin)
+                                              .andWhere('lng', '<', lngMax)
+                                                                                            
+  },
+  
   // *** /messages Queries *** //
   getMessagesFor: function(marketID) { return knex('messages')
                                               .where('market_id', marketID)
