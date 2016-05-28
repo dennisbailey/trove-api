@@ -51,7 +51,7 @@ router.get('/markets/nearby', function(req, res, next) {
 });
 
 // Route to return all information for ONE Farmers Market
-router.get('/markets/:marketID', function(req, res, next) {
+router.get('/markets/info', function(req, res, next) {
 
   var promises = [];
   
