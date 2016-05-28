@@ -1,15 +1,14 @@
 // Converts from degrees to radians.
 var radians = function(degrees) {
-  console.log('radians!');
   return degrees * Math.PI / 180;
 };
    
 // Converts from radians to degrees.
 var degrees = function(radians) {
-  console.log('degrees!');
   return radians * 180 / Math.PI;
 };
 
+// Do some fancy maths to find all points (given a starting latitude and longitude) that are within a given radius
 var sortByDistance = function(array, lat, lng, radiusSearch) {
 
   var result = [];
