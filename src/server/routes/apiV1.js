@@ -78,9 +78,9 @@ router.get('/markets/info', function(req, res, next) {
 /* --- MESSAGES ROUTES --- */
 /***************************/
 // Route to return a list of ALL Messages for ONE Market
-router.get('/messages/:marketID', function(req, res, next) {
+router.get('/messages', function(req, res, next) {
 
-  api.getMessagesFor(req.params.marketID)
+  api.getMessagesFor(req.query.id)
 
   .then( function(result) { return res.status(200)
                                       .json({ status: 'All the great Messages for Market ' + req.params.marketID,
@@ -96,11 +96,11 @@ router.get('/messages/:marketID', function(req, res, next) {
 
 
 // Route to add a message to the database
-router.post('/messages/:marketID', function(req, res, next) {
+router.post('/messages', function(req, res, next) {
 
 // Req.body needs the marketID, categoryID, msg, img, and vendor boolean
 
-  api.postMessagesFor(req.body)
+  api.postMessagesFor(req.query.id, req.body)
 
   .then( function(result) { return res.status(200)
                                       .json({ status: 'Another message successfully saved. For posterity',

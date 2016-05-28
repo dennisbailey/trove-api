@@ -36,8 +36,8 @@ module.exports = {
                                               .orderBy('dt', 'desc') 
   },
                                               
-  postMessage: function(payload) { return knex('messages')
-                                          .insert(payload) 
+  postMessage: function(marketID, payload) { return knex('messages')
+                                                    .insert(payload) 
   }
 
 };
