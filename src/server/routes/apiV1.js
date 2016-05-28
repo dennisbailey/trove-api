@@ -55,8 +55,8 @@ router.get('/markets/info', function(req, res, next) {
 
   var promises = [];
   
-  promises.push(api.getInfoFor(8370))
-  promises.push(api.getCategoriesFor(1011056))
+  promises.push(api.getInfoFor(req.query.id))
+  promises.push(api.getCategoriesFor(req.query.fmid))
   
   Promise.all(promises)  
 
