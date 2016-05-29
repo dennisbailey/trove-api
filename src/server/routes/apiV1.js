@@ -83,7 +83,7 @@ router.get('/messages', function(req, res, next) {
   api.getMessagesFor(req.query.id)
 
   .then( function(result) { return res.status(200)
-                                      .json({ status: 'All the great Messages for Market ID' + req.query.id,
+                                      .json({ status: 'All the great Messages for Market ID ' + req.query.id,
                                               data: result }); 
   })
 
