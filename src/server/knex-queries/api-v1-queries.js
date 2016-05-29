@@ -33,7 +33,8 @@ module.exports = {
   // *** /messages Queries *** //
   getMessagesFor: function(marketID) { return knex('messages')
                                               .where('market_id', marketID)
-                                              .orderBy('dt', 'desc') 
+                                              .innerJoin('categories', 'categories.id', 'messages.category_id')
+                                              .orderBy('dt', 'asc') 
   },
                                               
   postMessage: function(marketID, payload) { return knex('messages')
