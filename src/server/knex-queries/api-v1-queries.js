@@ -38,7 +38,7 @@ module.exports = {
   getMessagesFor: function(marketID) { return knex('messages')
                                               .where('market_id', marketID)
                                               .leftJoin('categories', 'categories.id', 'messages.category_id')
-                                              .orderBy('dt', 'desc')
+                                              .orderBy('dt', 'desc') // This puts the most recent message on top. Switch to 'asc' to reverse.
                                               .limit(5);
   },
                                               
