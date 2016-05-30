@@ -131,7 +131,7 @@ router.post('/messages', function(req, res, next) {
 
 // Req.body needs the marketID, categoryID, msg, img, and vendor boolean
 
-  api.postMessagesFor(req.query.id, req.body)
+  api.postMessageFor(req.query.id, req.body)
 
   .then( function(result) { return res.status(200)
                                       .json({ status: 'Another message successfully saved. For posterity',
