@@ -27,7 +27,7 @@ router.get('/markets', function(req, res, next) {
 router.get('/markets/nearby', function(req, res, next) {
   
   var radiusEarth = 3959;
-  var radiusSearch = parseFloat(req.query.searchRadius);
+  var radiusSearch = parseFloat(req.query.searchRadius || 10);
   var lat = parseFloat(req.query.lat);
   var lng = parseFloat(req.query.lng)
   
@@ -49,6 +49,37 @@ router.get('/markets/nearby', function(req, res, next) {
                                               errorMsg: error }); });
 
 });
+
+// Route to find the markets that are near a given zip code
+router.get('/markets/nearbyzip', function(req, res, next) {
+
+  api.getCoordsByZip(req.query.zip)
+  
+  .then( function (result) {  var radiusEarth = 3959;
+                              var radiusSearch = parseFloat(req.query.searchRadius || 10);
+                              var lat = parseFloat(result[0].lat);
+                              var lng = parseFloat(result[0].lng)
+                              
+                              
+                              var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
+                              var latMin = lat - geoHelpers.degrees(radiusSearch/radiusEarth);
+                              var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
+                              var lngMin = lng - geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
+                                                            
+                              api.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
+  
+                              .then( function(result) { return res.status(200)
+                                                        .json({ status: 'Check out these nearby Farmers Markets',
+                                                                nearbyMarkets: geoHelpers.sortByDistance(result, lat, lng, radiusSearch) }); 
+                              })    
+  })
+  
+  .catch( function(error) { return res.status(401)
+                                  .json({ status: 'There was an error',
+                                          errorMsg: error }); });
+
+});
+
 
 // Route to return all information for ONE Farmers Market
 router.get('/markets/info', function(req, res, next) {
