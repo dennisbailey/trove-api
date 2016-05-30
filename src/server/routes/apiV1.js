@@ -113,9 +113,9 @@ router.get('/messages', function(req, res, next) {
 
   api.getMessagesFor(req.query.id)
 
-  .then( function(result) { return res.status(200)
-                                      .json({ status: 'All the great Messages for Market ID ' + req.query.id,
-                                              data: result }); 
+  .then( function(result) { global.io.emit('message.new', result); 
+                            res.status(200).json({ status: 'All the great Messages for Market ID ' + req.query.id,
+                                                   data: result }); 
   })
 
   .catch( function(error) { return res.status(401)
@@ -145,5 +145,15 @@ router.post('/messages', function(req, res, next) {
 
 });
 
+
+/***************************/
+/* --- socket Testing --- */
+/***************************/
+router.get('/ping', ping);
+
+function ping (req, res) {
+  global.io.emit('status', 'pong!');
+  res.status(200).json({ message: 'pong' });
+};
 
 module.exports = router;
