@@ -185,7 +185,7 @@ router.get('/upload', function(req, res, next) {
 // S3 test route
 router.get('/bucket', function(req, res, next) {
 
-  var s3 = new AWS.S3({params: {Bucket: 'test', Key: 'test'}});
+  var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest', Key: 'test'}});
   
   s3.createBucket(function(err) {
     if (err) { console.log("Error:", err); }
