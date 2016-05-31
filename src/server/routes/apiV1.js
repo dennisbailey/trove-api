@@ -154,9 +154,6 @@ router.post('/messages', function(req, res, next) {
 // Set the region for requests.
 AWS.config.region = 'us-standard';
 
-AWS_ACCESS_KEY_ID='AKID'
-AWS_SECRET_ACCESS_KEY='SECRET'
-
 router.get('/test', function(req, res, next) {
 
   var s3 = new AWS.S3();
