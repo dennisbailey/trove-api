@@ -185,12 +185,12 @@ router.get('/upload', function(req, res, next) {
 // S3 test route
 router.get('/bucket', function(req, res, next) {
 
-  var s3 = new AWS.S3({params: {Bucket: 'myBucket', Key: 'myKey'}});
+  var s3 = new AWS.S3({params: {Bucket: 'test', Key: 'test'}});
   
   s3.createBucket(function(err) {
     if (err) { console.log("Error:", err); }
     else {
-      s3.upload({Body: 'Hello!'}, function() {
+      s3.upload({Body: 'hello'}, function() {
         console.log("Successfully uploaded data to myBucket/myKey");
       });
     }
