@@ -1,6 +1,7 @@
 var express = require('express');
 var api = require('../knex-queries/api-v1-queries');
 var router = express.Router();
+var AWS = require('aws-sdk');
 var geoHelpers = require('../helpers/geo-helpers');
 
 /*************************/
@@ -135,8 +136,8 @@ router.post('/messages', function(req, res, next) {
 
   .then( function(result) { global.io.emit('message.new', req.body.market_id); 
                                   res.status(200)
-                                      .json({ status: 'Another message successfully saved. For posterity',
-                                              data: result }); 
+                                     .json({ status: 'Another message successfully saved. For posterity',
+                                             data: result }); 
   })
 
   .catch( function(error) { return res.status(401)
@@ -147,14 +148,29 @@ router.post('/messages', function(req, res, next) {
 });
 
 
-/***************************/
-/* --- socket Testing --- */
-/***************************/
-router.get('/ping', ping);
+/*********************/
+/* --- S3 Images --- */
+/*********************/
+// Set the region for requests.
+AWS.config.region = 'us-standard';
 
-function ping (req, res) {
-  global.io.emit('status', 'pong!');
-  res.status(200).json({ message: 'pong' });
-};
+AWS_ACCESS_KEY_ID='AKID'
+AWS_SECRET_ACCESS_KEY='SECRET'
+
+router.get('/test', function(req, res, next) {
+
+  var s3 = new AWS.S3();
+  
+  s3.listBuckets(function(err, data) {
+    if (err) { console.log("Error:", err); }
+  
+    else { for (var index in data.Buckets) {
+              var bucket = data.Buckets[index];
+        console.log("Bucket: ", bucket.Name, ' : ', bucket.CreationDate);
+      }
+    }
+  });
+
+});
 
 module.exports = router;
