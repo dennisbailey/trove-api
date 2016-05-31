@@ -152,19 +152,21 @@ router.post('/messages', function(req, res, next) {
 /* --- S3 Images --- */
 /*********************/
 // Set the region for requests.
-AWS.config.region = 'us-east-1';
+AWS.config.region = 'us-west-2';
 
+// S3 test route
 router.get('/test', function(req, res, next) {
-console.log('welcome to the test route');
+
   var s3 = new AWS.S3();
   
   s3.listBuckets(function(err, data) {
-    console.log('welcome to the list buckets function');
-    if (err) { console.log("Error:", err); }
+
+    if (err) { return res.status(401)
+                         .json({ status: 'There was an error',
+                                 errorMsg: error }); }
   
-    else { for (var index in data.Buckets) {
-              var bucket = data.Buckets[index];
-        console.log("Bucket: ", bucket.Name, ' : ', bucket.CreationDate);
+    else { return res.status(200)
+                     .json({ buckets: data.Buckets })
       }
     }
   });
