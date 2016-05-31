@@ -174,9 +174,9 @@ router.get('/test', function(req, res, next) {
 // S3 test route
 router.get('/upload', function(req, res, next) {
 
-  var s3 = new AWS.S3({params: {Bucket: 'troveimages'}});
+  var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
   
-  s3.upload({Body: 'Hello!'}, function() {
+  s3.upload({Key: 'testkey', Body: 'Did the upload work?'}, function() {
       console.log("Successfully uploaded data to myBucket/myKey");
   });
 
