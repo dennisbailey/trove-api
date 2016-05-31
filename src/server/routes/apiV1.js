@@ -166,9 +166,7 @@ router.get('/test', function(req, res, next) {
                                  errorMsg: error }); }
   
     else { return res.status(200)
-                     .json({ buckets: data.Buckets })
-      }
-    }
+                     .json({ buckets: data.Buckets }); }
   });
 
 });
