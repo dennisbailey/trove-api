@@ -155,10 +155,11 @@ router.post('/messages', function(req, res, next) {
 AWS.config.region = 'us-east-1';
 
 router.get('/test', function(req, res, next) {
-
+console.log('welcome to the test route');
   var s3 = new AWS.S3();
   
   s3.listBuckets(function(err, data) {
+    console.log('welcome to the list buckets function');
     if (err) { console.log("Error:", err); }
   
     else { for (var index in data.Buckets) {
