@@ -113,7 +113,7 @@ router.get('/messages', function(req, res, next) {
 
   api.getMessagesFor(req.query.id)
 
-  .then( function(result) { global.io.emit('message.new', result); 
+  .then( function(result) {  
                             res.status(200).json({ status: 'All the great Messages for Market ID ' + req.query.id,
                                                    data: result }); 
   })
@@ -133,7 +133,8 @@ router.post('/messages', function(req, res, next) {
 
   api.postMessageFor(req.body)
 
-  .then( function(result) { return res.status(200)
+  .then( function(result) { global.io.emit('message.new', result); 
+                                  res.status(200)
                                       .json({ status: 'Another message successfully saved. For posterity',
                                               data: result }); 
   })
