@@ -152,7 +152,7 @@ router.post('/messages', function(req, res, next) {
 /* --- S3 Images --- */
 /*********************/
 // Set the region for requests.
-AWS.config.region = 'us-standard';
+AWS.config.region = 'us-east-1';
 
 router.get('/test', function(req, res, next) {
 
