@@ -133,7 +133,7 @@ router.post('/messages', function(req, res, next) {
 
   api.postMessageFor(req.body)
 
-  .then( function(result) { global.io.emit('message.new', result); 
+  .then( function(result) { global.io.emit('message.new', req.body.id); 
                                   res.status(200)
                                       .json({ status: 'Another message successfully saved. For posterity',
                                               data: result }); 
