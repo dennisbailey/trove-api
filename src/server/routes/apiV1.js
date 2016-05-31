@@ -157,23 +157,43 @@ AWS.config.region = 'us-west-2';
 // S3 test route
 router.get('/test', function(req, res, next) {
 
-//   var s3 = new AWS.S3();
-//   
-//   s3.listBuckets(function(err, data) {
-// 
-//     if (err) { return res.status(401)
-//                          .json({ status: 'There was an error',
-//                                  errorMsg: error }); }
-//   
-//     else { return res.status(200)
-//                      .json({ buckets: data.Buckets }); }
-//   });
+  var s3 = new AWS.S3();
   
+  s3.listBuckets(function(err, data) {
+
+    if (err) { return res.status(401)
+                         .json({ status: 'There was an error',
+                                 errorMsg: error }); }
   
+    else { return res.status(200)
+                     .json({ buckets: data.Buckets }); }
+  });
+
+});
+
+// S3 test route
+router.get('/upload', function(req, res, next) {
+
   var s3 = new AWS.S3({params: {Bucket: 'troveimages'}});
   
   s3.upload({Body: 'Hello!'}, function() {
       console.log("Successfully uploaded data to myBucket/myKey");
+  });
+
+});
+
+// S3 test route
+router.get('/bucket', function(req, res, next) {
+
+  var s3 = new AWS.S3({params: {Bucket: 'myBucket', Key: 'myKey'}});
+  
+  s3.createBucket(function(err) {
+    if (err) { console.log("Error:", err); }
+    else {
+      s3.upload({Body: 'Hello!'}, function() {
+        console.log("Successfully uploaded data to myBucket/myKey");
+      });
+    }
   });
 
 });
