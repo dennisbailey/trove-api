@@ -174,6 +174,7 @@ router.post('/upload', function(req, res) {
     upload(req,res,function(err){
             console.log(req.file);
         if(err){
+          console.log('err', err);
              res.json({error_code:1,err_desc:err});
              return;
         }
