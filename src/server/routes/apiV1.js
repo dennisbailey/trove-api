@@ -10,7 +10,7 @@ var multer = require('multer');
 /*************************/
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
-        cb(null, './uploads/');
+        cb(null, 'http://localhost:8888/uploads/');
     },
     filename: function (req, file, cb) {
         var datetimestamp = Date.now();
