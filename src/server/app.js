@@ -28,6 +28,16 @@ app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'views'));
 
 
+//*** allows CORS ***//
+app.use(function(req, res, next) { //allow cross origin requests
+    res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
+
 // *** config middleware *** //
 app.use(cors());
 app.use(logger('dev'));
