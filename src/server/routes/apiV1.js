@@ -170,7 +170,7 @@ router.post('/upload', upload.single('file'), function(req, res, next){
           function(err){
             var datetimestamp = Date.now();
             var newfilename = datetimestamp + '-' + req.file.originalname;
-            if(err) { console.log('errrrrrror'); return res.render('upload', { title : 'Upload Image',
+            if(err) { console.log('errrrrrror', err); return res.render('upload', { title : 'Upload Image',
                                                     message : { type: 'danger',
                                                                 messages : [ 'Failed uploading image. 1x001']}});
             }
