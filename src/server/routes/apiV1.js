@@ -176,7 +176,7 @@ router.post('/upload', upload.single('file'), function(req, res, next){
             }
             else { //pipe to s3
                    AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                                      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY});
+                                       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY});
 
                    var fileBuffer = fs.readFileSync(__dirname + '/uploads/' + req.file.originalname);
                    console.log(fileBuffer);
@@ -205,8 +205,11 @@ router.post('/upload', upload.single('file'), function(req, res, next){
                       }
 
                    });
+            
+            // After a successful upload to S3, get the path to the recently uploaded photo
             var photoPath = __dirname + '/uploads/' + req.file.originalname       
-                   console.log('photo path', photoPath);
+            
+            // Remove the photo from the server
             fs.unlink(photoPath, function() {
               console.log('delete file from uploads?');  
             });
