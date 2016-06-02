@@ -175,8 +175,8 @@ router.post('/upload', upload.single('file'), function(req, res, next){
                                                                 messages : [ 'Failed uploading image. 1x001']}});
             }
             else { //pipe to s3
-                   AWS.config.update({ accessKeyId: process.ENV.AWS_ACCESS_KEY_ID,
-                                      secretAccessKey: process.ENV.AWS_SECRET_ACCESS_KEY});
+                   AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                                      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY});
 
                    var fileBuffer = fs.readFileSync(__dirname + '/uploads/' + req.file.originalname);
                    console.log(fileBuffer);
