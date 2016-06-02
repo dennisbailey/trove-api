@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
 var cors = require('cors');
+require('dotenv').config();
 
 
 // *** routes *** //
