@@ -211,13 +211,13 @@ router.post('/upload', upload.single('file'), function(req, res, next){
 
                    });
             
-//             // After a successful upload to S3, get the path to the recently uploaded photo
-//             var photoPath = __dirname + '/uploads/' + req.file.originalname;       
-//             
-//             // Remove the photo from the server
-//             fs.unlink(photoPath, function() {
-//               console.log('delete file from uploads?');  
-//             });
+            // After a successful upload to S3, get the path to the recently uploaded photo
+            var photoPath = __dirname + '/uploads/' + req.file.originalname;       
+            
+            // Remove the photo from the server
+            fs.unlink(photoPath, function() {
+              console.log('delete file from uploads?');  
+            });
             
             
             }
