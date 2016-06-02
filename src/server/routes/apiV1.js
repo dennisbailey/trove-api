@@ -6,6 +6,7 @@ var geoHelpers = require('../helpers/geo-helpers');
 var multer = require('multer');
 var fs = require('fs');
 
+
 /*************************/
 /* --- MULTER HELPERS --- */
 /*************************/
@@ -161,7 +162,11 @@ router.post('/messages', function(req, res, next) {
 router.post('/upload', upload.single('file'), function(req, res, next){
    console.log('/// ----------- Upload');
    console.log(req.file);
+   console.log('market id? ', req.body.marketID);
+//    console.log('req', req);
    console.log(__dirname + '/uploads');
+   
+   
    
    // Check for a file in the request. Fail if there's no file present
    if(!req.file) { return res.render('upload', { title : 'Upload Image',
@@ -173,7 +178,7 @@ router.post('/upload', upload.single('file'), function(req, res, next){
    else { fs.rename(req.file.path, __dirname + '/uploads/' + req.file.originalname, function(err) {
             var datetimestamp = Date.now();
             var newfilename = datetimestamp + '-' + req.file.originalname;
-            
+                      
             if(err) { console.log('errrrrrror', err); return res.render('upload', { title : 'Upload Image',
                                                     message : { type: 'danger',
                                                                 messages : [ 'Failed uploading image. 1x001']}});
@@ -181,7 +186,7 @@ router.post('/upload', upload.single('file'), function(req, res, next){
             
             else { //pipe to s3
                    AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                                       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY});
+                                       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY });
 
                    var fileBuffer = fs.readFileSync(__dirname + '/uploads/' + req.file.originalname);
                    console.log(fileBuffer);
@@ -202,10 +207,20 @@ router.post('/upload', upload.single('file'), function(req, res, next){
                       if(err) { console.log(err); }
                       else { var return_data = { signed_request: data,
                                                  url: 'https://s3-us-west-2.amazonaws.com/qwertyuioptest/' + newfilename };
-
-                      console.log('return data - ////////// --------------');
-                      console.log(return_data);
-                      console.log("upload successful!!!");
+                            
+                            var imageInsert = {};
+                            imageInsert.market_id = req.body.marketID;
+                            imageInsert.img = 'https://s3-us-west-2.amazonaws.com/qwertyuioptest/' + newfilename;
+                            
+                            api.postMessageFor(imageInsert)
+                            
+                            .then( function (result) { console.log('image insert', result); })
+                            
+                            .catch( function (error) { console.log('image insert', error); })
+                            
+                            console.log('return data - ////////// --------------');
+                            console.log(return_data);
+                            console.log("upload successful!!!");
 
                       }
 
