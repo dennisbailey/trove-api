@@ -4,23 +4,26 @@ var router = express.Router();
 var AWS = require('aws-sdk');
 var geoHelpers = require('../helpers/geo-helpers');
 var multer = require('multer');
+var fs = require('fs');
 
 /*************************/
 /* --- MULTER HELPERS --- */
 /*************************/
-var storage = multer.diskStorage({ //multers disk storage settings
-    destination: function (req, file, cb) {
-        cb(null, __dirname + '/uploads/');
-    },
-    filename: function (req, file, cb) {
-        var datetimestamp = Date.now();
-        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
-    }
-});
+// var storage = multer.diskStorage({ //multers disk storage settings
+//     destination: function (req, file, cb) {
+//         cb(null, __dirname + '/uploads/');
+//     },
+//     filename: function (req, file, cb) {
+//         var datetimestamp = Date.now();
+//         cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
+//     }
+// });
 
-var upload = multer({ //multer settings
-                storage: storage
-            }).single('file');
+// var upload = multer({ //multer settings
+//                 storage: storage
+//             }).single('file');
+
+var upload = multer({ dest: 'uploads/' });
 
 /*************************/
 /* --- MARKET ROUTES --- */
@@ -165,29 +168,96 @@ router.post('/messages', function(req, res, next) {
 
 });
 
-/*************************/
-/* --- IMAGE ROUTES --- */
-/*************************/
-/** API path that will upload the files */
-router.post('/upload', function(req, res) {
-  console.log('upload route');
-    upload(req,res,function(err){
-            console.log(req.file);
-        if(err){
-          console.log('err', err);
-             res.json({error_code:1,err_desc:err});
-             return;
-        }
-         res.json({error_code:0,err_desc:null});
-    });
-});
-
-
 /*********************/
 /* --- S3 Images --- */
 /*********************/
 // Set the region for requests.
 AWS.config.region = 'us-west-2';
+
+/*************************/
+/* --- IMAGE ROUTES --- */
+/*************************/
+/** API path that will upload the files */
+// router.post('/upload', function(req, res) {
+//   console.log('THE UPLOAD ROUTE CALLED');
+//   // console.log('upload route');
+
+//   // var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
+
+//   // upload(req,res,function(err){
+//   //     if(err){
+//   //       console.log('err', err);
+//   //          res.json({error_code:1,err_desc:err});
+//   //          return;
+//   //     }
+//   //     s3.upload({Key: 'testkey', Body: 'Can We upload??????'}, function() { });
+//   //      res.json({error_code:0,err_desc:null});
+//   // });
+
+//   var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
+
+//   s3.upload({Key: 'testkey', Body: ''}, function() {
+//       console.log("Successfully uploaded data to myBucket/myKey");
+//   });
+// });
+
+router.post('/upload', upload.single('file'), function(req, res, next){
+   console.log('/// ----------- Upload');
+   console.log(req.file);
+   console.log(__dirname + '/uploads');
+   if(!req.file) { return res.render('upload', { title : 'Upload Image',
+                                                 message : { type: 'danger',
+                                                             messages : [ 'Failed uploading image. 1x001']}});
+   }
+   else { fs.rename(req.file.path, __dirname + '/uploads/' + req.file.originalname,
+          function(err){
+            var datetimestamp = Date.now();
+            var newfilename = datetimestamp + '-' + req.file.originalname;
+            if(err) { return res.render('upload', { title : 'Upload Image',
+                                                    message : { type: 'danger',
+                                                                messages : [ 'Failed uploading image. 1x001']}});
+            }
+            else { //pipe to s3
+                   AWS.config.update({ accessKeyId: 'AKIAJOHGBNRDSTFUGYIQ',
+                                      secretAccessKey: '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'});
+
+                   var fileBuffer = fs.readFileSync(__dirname + '/uploads/' + req.file.originalname);
+                   console.log(fileBuffer);
+
+                   var s3 = new AWS.S3();
+
+                   var s3_param = {
+                      Bucket: 'qwertyuioptest',
+                      Key: newfilename,
+                      Expires: 60,
+                      ContentType: req.file.mimetype,
+                      ACL: 'public-read',
+                      Body: fileBuffer
+                   };
+
+                   s3.putObject(s3_param, function(err, data){
+
+                      if(err) { console.log(err); }
+                      else { var return_data = { signed_request: data,
+                                                 url: 'https://s3-us-west-2.amazonaws.com/qwertyuioptest/' + newfilename };
+
+                      console.log('return data - ////////// --------------');
+                      console.log(return_data);
+
+                      // return res.render('upload', { data : return_data,
+                      //                               title : 'Upload Image : success',
+                      //                               message : { type: 'success',
+                      //                                           messages : [ 'Uploaded Image']}});
+
+                      console.log("upload successful!!!");
+
+                      }
+
+                   });
+              }
+          })
+   }
+});
 
 // S3 test route
 router.get('/test', function(req, res, next) {
