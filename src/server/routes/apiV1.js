@@ -205,8 +205,15 @@ router.post('/upload', upload.single('file'), function(req, res, next){
                       }
 
                    });
-              }
-          })
+            var photoPath = __dirname + '/uploads/' + req.file.originalname       
+                   console.log('photo path', photoPath);
+            fs.unlink(photoPath, function() {
+              console.log('delete file from uploads?');  
+            });
+            
+            
+            }
+        })
    }
 });
 
