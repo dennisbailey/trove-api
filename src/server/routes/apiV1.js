@@ -9,20 +9,6 @@ var fs = require('fs');
 /*************************/
 /* --- MULTER HELPERS --- */
 /*************************/
-// var storage = multer.diskStorage({ //multers disk storage settings
-//     destination: function (req, file, cb) {
-//         cb(null, __dirname + '/uploads/');
-//     },
-//     filename: function (req, file, cb) {
-//         var datetimestamp = Date.now();
-//         cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
-//     }
-// });
-
-// var upload = multer({ //multer settings
-//                 storage: storage
-//             }).single('file');
-
 var upload = multer({ dest: 'uploads/' });
 
 /*************************/
@@ -168,39 +154,10 @@ router.post('/messages', function(req, res, next) {
 
 });
 
-/*********************/
-/* --- S3 Images --- */
-/*********************/
-// Set the region for requests.
-AWS.config.region = 'us-west-2';
-
 /*************************/
 /* --- IMAGE ROUTES --- */
 /*************************/
 /** API path that will upload the files */
-// router.post('/upload', function(req, res) {
-//   console.log('THE UPLOAD ROUTE CALLED');
-//   // console.log('upload route');
-
-//   // var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
-
-//   // upload(req,res,function(err){
-//   //     if(err){
-//   //       console.log('err', err);
-//   //          res.json({error_code:1,err_desc:err});
-//   //          return;
-//   //     }
-//   //     s3.upload({Key: 'testkey', Body: 'Can We upload??????'}, function() { });
-//   //      res.json({error_code:0,err_desc:null});
-//   // });
-
-//   var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
-
-//   s3.upload({Key: 'testkey', Body: ''}, function() {
-//       console.log("Successfully uploaded data to myBucket/myKey");
-//   });
-// });
-
 router.post('/upload', upload.single('file'), function(req, res, next){
    console.log('/// ----------- Upload');
    console.log(req.file);
@@ -243,12 +200,6 @@ router.post('/upload', upload.single('file'), function(req, res, next){
 
                       console.log('return data - ////////// --------------');
                       console.log(return_data);
-
-                      // return res.render('upload', { data : return_data,
-                      //                               title : 'Upload Image : success',
-                      //                               message : { type: 'success',
-                      //                                           messages : [ 'Uploaded Image']}});
-
                       console.log("upload successful!!!");
 
                       }
@@ -258,53 +209,5 @@ router.post('/upload', upload.single('file'), function(req, res, next){
           })
    }
 });
-
-// S3 test route
-router.get('/test', function(req, res, next) {
-
-  var s3 = new AWS.S3();
-
-  s3.listBuckets(function(err, data) {
-
-    if (err) { return res.status(401)
-                         .json({ status: 'There was an error',
-                                 errorMsg: error }); }
-
-    else { return res.status(200)
-                     .json({ buckets: data.Buckets }); }
-  });
-
-});
-
-// S3 test route
-router.get('/upload', function(req, res, next) {
-
-  var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest'}});
-
-  s3.upload({Key: 'testkey', Body: 'Did the upload work?'}, function() {
-      console.log("Successfully uploaded data to myBucket/myKey");
-  });
-
-});
-
-
-
-// S3 test route
-router.get('/bucket', function(req, res, next) {
-
-  var s3 = new AWS.S3({params: {Bucket: 'qwertyuioptest', Key: 'test'}});
-
-  s3.createBucket(function(err) {
-    if (err) { console.log("Error:", err); }
-    else {
-      s3.upload({Body: 'hello'}, function() {
-        console.log("Successfully uploaded data to myBucket/myKey");
-      });
-    }
-  });
-
-});
-
-
 
 module.exports = router;
