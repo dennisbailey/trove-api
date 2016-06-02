@@ -162,18 +162,23 @@ router.post('/upload', upload.single('file'), function(req, res, next){
    console.log('/// ----------- Upload');
    console.log(req.file);
    console.log(__dirname + '/uploads');
+   
+   // Check for a file in the request. Fail if there's no file present
    if(!req.file) { return res.render('upload', { title : 'Upload Image',
                                                  message : { type: 'danger',
                                                              messages : [ 'Failed uploading image. 1x001']}});
    }
-   else { fs.rename(req.file.path, __dirname + '/uploads/' + req.file.originalname,
-          function(err){
+   
+   //
+   else { fs.rename(req.file.path, __dirname + '/uploads/' + req.file.originalname, function(err) {
             var datetimestamp = Date.now();
             var newfilename = datetimestamp + '-' + req.file.originalname;
+            
             if(err) { console.log('errrrrrror', err); return res.render('upload', { title : 'Upload Image',
                                                     message : { type: 'danger',
                                                                 messages : [ 'Failed uploading image. 1x001']}});
             }
+            
             else { //pipe to s3
                    AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID,
                                        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY});
@@ -206,13 +211,13 @@ router.post('/upload', upload.single('file'), function(req, res, next){
 
                    });
             
-            // After a successful upload to S3, get the path to the recently uploaded photo
-            var photoPath = __dirname + '/uploads/' + req.file.originalname       
-            
-            // Remove the photo from the server
-            fs.unlink(photoPath, function() {
-              console.log('delete file from uploads?');  
-            });
+//             // After a successful upload to S3, get the path to the recently uploaded photo
+//             var photoPath = __dirname + '/uploads/' + req.file.originalname;       
+//             
+//             // Remove the photo from the server
+//             fs.unlink(photoPath, function() {
+//               console.log('delete file from uploads?');  
+//             });
             
             
             }
