@@ -210,7 +210,7 @@ router.post('/images', upload.single('file'), function(req, res, next){
                    var s3 = new AWS.S3();
 
                    var s3_param = {
-                      Bucket: 'qwertyuioptest',
+                      Bucket: 'troveimages',
                       Key: newfilename,
                       Expires: 60,
                       ContentType: req.file.mimetype,
