@@ -222,15 +222,16 @@ router.post('/images', upload.single('file'), function(req, res, next){
 
                       if(err) { console.log(err); }
                       else { var return_data = { signed_request: data,
-                                                 url: 'https://s3-us-west-2.amazonaws.com/qwertyuioptest/' + newfilename };
+                                                 url: 'https://s3-us-west-2.amazonaws.com/troveimages/' + newfilename };
                             
                             var imageInsert = {};
                             imageInsert.market_id = req.body.marketID;
-                            imageInsert.img = 'https://s3-us-west-2.amazonaws.com/qwertyuioptest/' + newfilename;
+                            imageInsert.img = 'https://s3-us-west-2.amazonaws.com/troveimages/' + newfilename;
                             
                             api.postMessageFor(imageInsert)
                             
-                            .then( function (result) { console.log('image insert', result); })
+                            .then( function (result) { global.io.emit('image.new', req.body.marketID)
+                                                       console.log('image insert', result); })
                             
                             .catch( function (error) { console.log('image insert', error); })
                             
