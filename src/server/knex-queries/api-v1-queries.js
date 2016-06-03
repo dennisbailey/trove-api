@@ -39,11 +39,18 @@ module.exports = {
                                               .where('market_id', marketID)
                                               .leftJoin('categories', 'categories.id', 'messages.category_id')
                                               .orderBy('dt', 'desc') // This puts the most recent message on top. Switch to 'asc' to reverse.
-                                              .limit(5);
+                                              .limit(10);
   },
                                               
   postMessageFor: function(payload) { return knex('messages')
                                             .insert(payload); 
-  }
+  },
+  
+  // *** /images Queries *** //
+  getImagesFor: function(marketID) { return knex('images')
+                                            .where('market_id', marketID)
+                                            .orderBy('dt', 'desc'); // This puts the most recent message on top. Switch to 'asc' to reverse.
+  },
+  
 
 };
