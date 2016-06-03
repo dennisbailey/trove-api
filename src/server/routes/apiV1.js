@@ -158,8 +158,24 @@ router.post('/messages', function(req, res, next) {
 /*************************/
 /* --- IMAGE ROUTES --- */
 /*************************/
+// Route to return a list of ALL Messages for ONE Market
+router.get('/images', function(req, res, next) {
+
+  api.getImagesFor(req.query.id)
+
+  .then( function(result) { res.status(200).json({ status: 'All the great Images for Market ID ' + req.query.id,
+                                                   data: result });
+  })
+
+  .catch( function(error) { return res.status(401)
+                                       .json({ status: 'There was an error',
+                                               errorMsg: error });
+  });
+
+});
+
 /** API path that will upload the files */
-router.post('/upload', upload.single('file'), function(req, res, next){
+router.post('/images', upload.single('file'), function(req, res, next){
    console.log('/// ----------- Upload');
    console.log(req.file);
    console.log('market id? ', req.body.marketID);
