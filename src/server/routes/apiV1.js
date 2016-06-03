@@ -231,7 +231,6 @@ router.post('/images', upload.single('file'), function(req, res, next){
                             api.postImage(imageInsert)
                             
                             .then( function (result) { global.io.emit('image.new', req.body.marketID);
-                                                      console.log('socket id? ', req.body.marketID);
                                                        console.log('image insert', result); })
                             
                             .catch( function (error) { console.log('image insert', error); })
