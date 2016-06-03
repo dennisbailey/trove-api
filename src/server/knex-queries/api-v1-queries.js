@@ -42,7 +42,7 @@ module.exports = {
                                               .limit(10);
   },
                                               
-  postMessageFor: function(payload) { return knex('messages')
+  postMessage: function(payload) { return knex('messages')
                                             .insert(payload); 
   },
   
@@ -51,6 +51,10 @@ module.exports = {
                                             .where('market_id', marketID)
                                             .orderBy('dt', 'desc'); // This puts the most recent message on top. Switch to 'asc' to reverse.
   },
+  
+  postImage: function(payload) { return knex('images')
+                                          .insert(payload); 
+  }
   
 
 };

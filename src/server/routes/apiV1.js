@@ -140,7 +140,7 @@ router.post('/messages', function(req, res, next) {
 
 // Req.body needs the marketID, categoryID, msg, img, and vendor boolean
 
-  api.postMessageFor(req.body)
+  api.postMessage(req.body)
 
   .then( function(result) { global.io.emit('message.new', req.body.market_id);
                                   res.status(200)
@@ -228,7 +228,7 @@ router.post('/images', upload.single('file'), function(req, res, next){
                             imageInsert.market_id = req.body.marketID;
                             imageInsert.img = 'https://s3-us-west-2.amazonaws.com/troveimages/' + newfilename;
                             
-                            api.postMessageFor(imageInsert)
+                            api.postImage(imageInsert)
                             
                             .then( function (result) { global.io.emit('image.new', req.body.marketID)
                                                        console.log('image insert', result); })
