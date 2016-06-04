@@ -1,9 +1,9 @@
 var express = require('express');
-var api = require('../knex-queries/api-v1-queries');
 var router = express.Router();
-var AWS = require('aws-sdk');
+var api = require('../knex-queries/api-v1-queries');
 var geoHelpers = require('../helpers/geo-helpers');
 var multer = require('multer');
+var AWS = require('aws-sdk');
 var fs = require('fs');
 
 
@@ -15,7 +15,7 @@ var upload = multer({ dest: 'uploads/' });
 /*************************/
 /* --- MARKET ROUTES --- */
 /*************************/
-// Route to return a list of ALL Farmers Markets
+// Returns JSON containing ALL Farmers Markets
 router.get('/markets', function(req, res, next) {
 
   api.getAllFrom('markets')
@@ -26,7 +26,7 @@ router.get('/markets', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                      .json({ status: 'There was an error',
+                                      .json({ status: 'There was an error in your request for all Farmers Markets',
                                               errorMsg: error });
   });
 
@@ -40,7 +40,7 @@ router.get('/markets/nearby', function(req, res, next) {
   var lat = parseFloat(req.query.lat);
   var lng = parseFloat(req.query.lng);
 
-
+  // Define a bounding box for the SQL query
   var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
   var latMin = lat - geoHelpers.degrees(radiusSearch/radiusEarth);
   var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
@@ -54,7 +54,7 @@ router.get('/markets/nearby', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                      .json({ status: 'There was an error',
+                                      .json({ status: 'There was an error finding nearby markets',
                                               errorMsg: error }); });
 
 });
@@ -69,7 +69,7 @@ router.get('/markets/nearbyzip', function(req, res, next) {
                               var lat = parseFloat(result[0].lat);
                               var lng = parseFloat(result[0].lng);
 
-
+                              // Define a bounding box for the SQL query
                               var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
                               var latMin = lat - geoHelpers.degrees(radiusSearch/radiusEarth);
                               var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch/radiusEarth) / Math.cos(geoHelpers.radians(lat)));
@@ -84,7 +84,7 @@ router.get('/markets/nearbyzip', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                  .json({ status: 'There was an error',
+                                  .json({ status: 'There was an error searching for nearby markets by zip',
                                           errorMsg: error }); });
 
 });
@@ -107,7 +107,7 @@ router.get('/markets/info', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                      .json({ status: 'There was an error',
+                                      .json({ status: 'There was an error getting the info for the requested market',
                                               errorMsg: error });
   });
 
@@ -128,7 +128,7 @@ router.get('/messages', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                       .json({ status: 'There was an error',
+                                       .json({ status: 'There was an error getting messages for this market',
                                                errorMsg: error });
   });
 
@@ -144,12 +144,12 @@ router.post('/messages', function(req, res, next) {
 
   .then( function(result) { global.io.emit('message.new', req.body.market_id);
                                   res.status(200)
-                                     .json({ status: 'Another message successfully saved. For posterity',
+                                     .json({ status: 'Another message successfully saved. For posterity.',
                                              data: result });
   })
 
   .catch( function(error) { return res.status(401)
-                                       .json({ status: 'There was an error',
+                                       .json({ status: 'There was an error posting this message.',
                                                errorMsg: error });
   });
 
@@ -168,7 +168,7 @@ router.get('/images', function(req, res, next) {
   })
 
   .catch( function(error) { return res.status(401)
-                                       .json({ status: 'There was an error',
+                                       .json({ status: 'There was an error getting the images for this market',
                                                errorMsg: error });
   });
 
@@ -248,7 +248,7 @@ router.post('/images', upload.single('file'), function(req, res, next){
 
             // Remove the photo from the server
             fs.unlink(photoPath, function() {
-              console.log('delete file from uploads?');
+              console.log('Server clean up complete.');
             });
 
 
