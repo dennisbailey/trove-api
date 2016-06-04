@@ -38,7 +38,7 @@ router.get('/markets/nearby', function(req, res, next) {
   var radiusEarth = 3959;
   var radiusSearch = parseFloat(req.query.searchRadius || 10);
   var lat = parseFloat(req.query.lat);
-  var lng = parseFloat(req.query.lng)
+  var lng = parseFloat(req.query.lng);
 
 
   var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
@@ -67,7 +67,7 @@ router.get('/markets/nearbyzip', function(req, res, next) {
   .then( function (result) {  var radiusEarth = 3959;
                               var radiusSearch = parseFloat(req.query.searchRadius || 10);
                               var lat = parseFloat(result[0].lat);
-                              var lng = parseFloat(result[0].lng)
+                              var lng = parseFloat(result[0].lng);
 
 
                               var latMax = lat + geoHelpers.degrees(radiusSearch/radiusEarth);
@@ -80,7 +80,7 @@ router.get('/markets/nearbyzip', function(req, res, next) {
                               .then( function(result) { return res.status(200)
                                                         .json({ status: 'Check out these nearby Farmers Markets',
                                                                 nearbyMarkets: geoHelpers.sortByDistance(result, lat, lng, radiusSearch) });
-                              })
+                              });
   })
 
   .catch( function(error) { return res.status(401)
@@ -95,8 +95,8 @@ router.get('/markets/info', function(req, res, next) {
 
   var promises = [];
 
-  promises.push(api.getInfoFor(req.query.id))
-  promises.push(api.getCategoriesFor(req.query.fmid))
+  promises.push(api.getInfoFor(req.query.id));
+  promises.push(api.getCategoriesFor(req.query.fmid));
 
   Promise.all(promises)
 
@@ -181,25 +181,25 @@ router.post('/images', upload.single('file'), function(req, res, next){
    console.log('market id? ', req.body.marketID);
 //    console.log('req', req);
    console.log(__dirname + '/uploads');
-   
-   
-   
+
+
+
    // Check for a file in the request. Fail if there's no file present
    if(!req.file) { return res.render('upload', { title : 'Upload Image',
                                                  message : { type: 'danger',
                                                              messages : [ 'Failed uploading image. 1x001']}});
    }
-   
+
    //
    else { fs.rename(req.file.path, __dirname + '/uploads/' + req.file.originalname, function(err) {
             var datetimestamp = Date.now();
             var newfilename = datetimestamp + '-' + req.file.originalname;
-                      
+
             if(err) { console.log('errrrrrror', err); return res.render('upload', { title : 'Upload Image',
                                                     message : { type: 'danger',
                                                                 messages : [ 'Failed uploading image. 1x001']}});
             }
-            
+
             else { //pipe to s3
                    AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID,
                                        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY });
@@ -223,18 +223,18 @@ router.post('/images', upload.single('file'), function(req, res, next){
                       if(err) { console.log(err); }
                       else { var return_data = { signed_request: data,
                                                  url: 'https://s3-us-west-2.amazonaws.com/troveimages/' + newfilename };
-                            
+
                             var imageInsert = {};
                             imageInsert.market_id = req.body.marketID;
                             imageInsert.img = 'https://s3-us-west-2.amazonaws.com/troveimages/' + newfilename;
-                            
+
                             api.postImage(imageInsert)
-                            
+
                             .then( function (result) { global.io.emit('image.new', req.body.marketID);
                                                        console.log('image insert', result); })
-                            
-                            .catch( function (error) { console.log('image insert', error); })
-                            
+
+                            .catch( function (error) { console.log('image insert', error); });
+
                             console.log('return data - ////////// --------------');
                             console.log(return_data);
                             console.log("upload successful!!!");
@@ -242,18 +242,18 @@ router.post('/images', upload.single('file'), function(req, res, next){
                       }
 
                    });
-            
+
             // After a successful upload to S3, get the path to the recently uploaded photo
-            var photoPath = __dirname + '/uploads/' + req.file.originalname;       
-            
+            var photoPath = __dirname + '/uploads/' + req.file.originalname;
+
             // Remove the photo from the server
             fs.unlink(photoPath, function() {
-              console.log('delete file from uploads?');  
+              console.log('delete file from uploads?');
             });
-            
-            
+
+
             }
-        })
+        });
    }
 });
 
