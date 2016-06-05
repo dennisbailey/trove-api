@@ -19,6 +19,12 @@ module.exports = {
                                             .where('markets_categories.fmid', fmid);
   },
   
+  getVendorsFor: function(fmid) { return knex('vendors')
+                                         .innerJoin('markets_vendors', 'vendors.id', 'markets_vendors.vendor_id')
+                                         .leftJoin('categories', 'categories.id', 'vendors.category_id')
+                                         .where('markets_vendors.fmid', fmid);
+  },
+  
   findNearbyMarkets: function(latMin, 
                               latMax, 
                               lngMin, 
