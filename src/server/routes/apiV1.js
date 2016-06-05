@@ -97,13 +97,15 @@ router.get('/markets/info', function(req, res, next) {
 
   promises.push(api.getInfoFor(req.query.id));
   promises.push(api.getCategoriesFor(req.query.fmid));
+  promises.push(api.getVendorsFor(req.query.fmid))
 
   Promise.all(promises)
 
   .then( function(result) { return res.status(200)
                                       .json({ status: 'All the great info for this Farmers Market',
                                               info: result[0],
-                                              categories: result[1] });
+                                              categories: result[1],
+                                              vendors: result[2] });
   })
 
   .catch( function(error) { return res.status(401)
@@ -255,6 +257,27 @@ router.post('/images', upload.single('file'), function(req, res, next){
             }
         });
    }
+});
+
+/**************************/
+/* --- VENDORS ROUTES --- */
+/**************************/
+
+// Route to return all information for ONE Farmers Market
+router.get('/vendors', function(req, res, next) {
+
+  api.getVendorsFor(req.query.fmid)
+
+  .then( function(result) { return res.status(200)
+                                      .json({ status: 'All the great vendors for this Farmers Market',
+                                              vendors: result });
+  })
+
+  .catch( function(error) { return res.status(401)
+                                      .json({ status: 'There was an error getting vendors for this market',
+                                              errorMsg: error });
+  });
+
 });
 
 module.exports = router;
