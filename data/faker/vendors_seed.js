@@ -5,12 +5,12 @@ category_counts = [2181, 4631, 2677, 3194, 3661, 3853, 1280, 4196, 5142, 4277, 4
 console.log('vendor_name,category_id');
 
 // For all 8557 markets, create one vendor per applicable category
-for (var i = 1; i < category_counts.length ; i++) { 
+for (var i = 0; i < category_counts.length ; i++) { 
   
   for (var j = 0; j < category_counts[i] ; j++) { 
     
     var vendorName = faker.company.companyName();
-    var category_id = j + 1;
+    var category_id = i + 1;
     
     console.log( vendorName + ',' + category_id );
         
