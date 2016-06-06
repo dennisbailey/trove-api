@@ -1,0 +1,19 @@
+msg
+7894,13,"Making some good food for Father's day? We will have a 10% discount on bacon all weekend, what could be better? Come find the Bacon Me Crazy tent",true
+7894,9,"Here at Anderson farms we have a surplus of tomatoes and we want to share the wealth! Show us this message and you'll get a $2 discount, if your purchase includes tomatoes.",true
+7894,9,"Summer has come and we have a bumper crop! Come by The Full Moon Farms tent and check out the amazing fresh produce we'll have this weekend.",true
+7894,1,"Body Organics will be at the market this morning with three new scented bath bombs: Ocean Spray, Lavender, and Green Tea. Stop by and check it out!",true
+7894,26,"It's hot out! Why not hydrate with a beverage that will boost your nutrients and make you feel great? Show this message for 5% off your purchase at The Juice.", true
+7894,2,"Does dad have a sweet tooth? Why not stop by our Sweet Sweet Bakery and give him a present he'll really love?",true
+7894,16,"It isn't too late to get your garden going this year! We have plenty of sprouted plants just ready to go to a good home. Come see us at Plant Happy.",true
+7894,1,"Who wants to make a salad? Crooked Tree Farms has a sale going on organic romaine lettuce."
+7894,10,"I heard that honey is actually good for you. Can someone tell me more about it, and if there is any honey you'd recommend?",false
+7894,10,"It has to better for you than plain sugar. I got some honey at Junebug Farms last week, the folks there are really knowledgeable as well.",false
+7894,10,"Ted from Junebug here. Honey does have a ton of really great benefits. Did you know that it is known as one of the oldest wound dressings as well? If you come by I'd love to tell you more about the benefits of honey.",false
+7894,18,"Just got some ice cream from Sweet Dreams creamery and it is seriously the best ever. Their special today is pumpkin.",false
+7894,18,"OMG there is a lady here from Rice Rice Baby selling homemade riceballs, and they are really authentic, and a super good price.",false
+7894,19,"I have been searching forever for a really great lotion, and I think I finally found it today at Whole Body Organics! The ladies there are REALLY nice and explain everything really well as well.",false
+7894,18,"YESSSS THE BISCUIT BUS IS HERE TODAY. YUM.",false
+7894,11,"Just had a really amazing jam tasting at Sticky Fingers. They have a great deal going on as well! Buy 2 get one free.",false
+7894,1,"Got the most beautiful organic stalk of brussel sprouts from Crooked Tree Farms. Go check them out!",false
+7894,2,"Next week will Sugar Island Bakery's first week out @ the market, and we want to sample something. What do you guys want to try?",true
