@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.integer('category_id').references('categories', 'id'),
     table.string('msg'),
     table.string('img'),
-    table.boolean('vendor'),
+    table.boolean('vendor').defaultTo(false),
 //     table.integer('vendor_id').defaultTo(0),
     table.dateTime('dt').notNullable().defaultTo(knex.raw('now()'))
   })
