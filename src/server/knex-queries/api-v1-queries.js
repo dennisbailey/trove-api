@@ -1,45 +1,45 @@
 var knex = require('../../../db/knex');
 
 module.exports = {
-  
+
   // *** Flexible Queries *** //
-  
+
   getAllFrom: function (table) { return knex(table); },
-  
-  
+
+
   // *** /markets Queries *** //
-  
+
   getInfoFor: function(marketID) { return knex('markets')
-                                         .where('markets.id', marketID)
-    
+                                         .where('markets.id', marketID);
+
   },
-  
+
   getCategoriesFor: function(fmid) { return knex('markets_categories')
                                             .innerJoin('categories', 'categories.id', 'markets_categories.category_id')
                                             .where('markets_categories.fmid', fmid);
   },
-  
+
   getVendorsFor: function(fmid) { return knex('vendors')
                                          .innerJoin('markets_vendors', 'vendors.id', 'markets_vendors.vendor_id')
                                          .leftJoin('categories', 'categories.id', 'vendors.category_id')
                                          .where('markets_vendors.fmid', fmid);
   },
-  
-  findNearbyMarkets: function(latMin, 
-                              latMax, 
-                              lngMin, 
+
+  findNearbyMarkets: function(latMin,
+                              latMax,
+                              lngMin,
                               lngMax) { return knex('markets')
                                               .where(   'lat', '>', latMin)
                                               .andWhere('lat', '<', latMax)
                                               .andWhere('lng', '>', lngMin)
                                               .andWhere('lng', '<', lngMax);
-                                                                                            
+
   },
-  
+
   getCoordsByZip: function(zip) { return knex('zip_codes')
-                                        .where('zip', zip);
+                                         .where('zip', zip);
   },
-  
+
   // *** /messages Queries *** //
   getMessagesFor: function(marketID) { return knex('messages')
                                               .where('market_id', marketID)
@@ -47,20 +47,20 @@ module.exports = {
                                               .orderBy('dt', 'desc') // This puts the most recent message on top. Switch to 'asc' to reverse.
                                               .limit(20);
   },
-                                              
+
   postMessage: function(payload) { return knex('messages')
-                                            .insert(payload); 
+                                          .insert(payload);
   },
-  
+
   // *** /images Queries *** //
   getImagesFor: function(marketID) { return knex('images')
                                             .where('market_id', marketID)
                                             .orderBy('dt', 'desc'); // This puts the most recent message on top. Switch to 'asc' to reverse.
   },
-  
+
   postImage: function(payload) { return knex('images')
-                                          .insert(payload); 
+                                        .insert(payload);
   }
-  
+
 
 };
