@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var api = require('../knex-queries/api-v1-queries');
+var knex = require('../knex-queries/api-v1-queries');
 var geoHelpers = require('../helpers/geo-helpers');
 
 /*************************/
@@ -9,7 +9,7 @@ var geoHelpers = require('../helpers/geo-helpers');
 // Returns JSON containing ALL Farmers Markets
 router.get('/markets', function(req, res, next) {
 
-    api.getAllFrom('markets')
+    knex.getAllFrom('markets')
 
     .then(function(result) {
         return res.status(200)
@@ -42,7 +42,15 @@ router.get('/markets/nearby', function(req, res, next) {
     var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch / radiusEarth) / Math.cos(geoHelpers.radians(lat)));
     var lngMin = lng - geoHelpers.degrees(Math.asin(radiusSearch / radiusEarth) / Math.cos(geoHelpers.radians(lat)));
 
-    api.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
+    /*
+    function getBounds() {
+        return  {
+            latmax: latmax
+        }
+    }
+    */
+
+    knex.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
 
     .then(function(result) {
         return res.status(200)
@@ -65,7 +73,7 @@ router.get('/markets/nearby', function(req, res, next) {
 // Route to find the markets that are near a given zip code
 router.get('/markets/nearbyzip', function(req, res, next) {
 
-    api.getCoordsByZip(req.query.zip)
+    knex.getCoordsByZip(req.query.zip)
 
     .then(function(result) {
         var radiusEarth = 3959;
@@ -79,7 +87,7 @@ router.get('/markets/nearbyzip', function(req, res, next) {
         var lngMax = lng + geoHelpers.degrees(Math.asin(radiusSearch / radiusEarth) / Math.cos(geoHelpers.radians(lat)));
         var lngMin = lng - geoHelpers.degrees(Math.asin(radiusSearch / radiusEarth) / Math.cos(geoHelpers.radians(lat)));
 
-        api.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
+        knex.findNearbyMarkets(latMin, latMax, lngMin, lngMax)
 
         .then(function(result) {
             return res.status(200)
@@ -106,9 +114,9 @@ router.get('/markets/info', function(req, res, next) {
 
     var promises = [];
 
-    promises.push(api.getInfoFor(req.query.id));
-    promises.push(api.getCategoriesFor(req.query.fmid));
-    promises.push(api.getVendorsFor(req.query.fmid));
+    promises.push(knex.getInfoFor(req.query.id));
+    promises.push(knex.getCategoriesFor(req.query.fmid));
+    promises.push(knex.getVendorsFor(req.query.fmid));
 
     Promise.all(promises)
 
